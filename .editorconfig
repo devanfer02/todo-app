@@ -1,0 +1,9 @@
+root=true
+
+[*.{html,tsx,ts,jsx,js}]
+indent_size = 2
+indent_style = space
+
+[*.{css,go}]
+indent_size = 4
+indent_style = space
