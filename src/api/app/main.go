@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 	"todo-app/configs"
 	"todo-app/routes"
 
