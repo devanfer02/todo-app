@@ -36,7 +36,7 @@ func (todoCtr *TodoController) GetTodos() gin.HandlerFunc {
         if idParam == "" {
             var todo []models.Todo
 
-            res := todoCtr.svc.FetchData(&todo);
+            res := todoCtr.svc.FetchTodos(&todo);
 
             rsp.SendResponse(ctx, res)
             return
@@ -74,7 +74,8 @@ func (todoCtr *TodoController) CreateTodo() gin.HandlerFunc {
             return 
         }
 
-        res := todoCtr.svc.InsertData(&todo)
+        todo.ID, _ = uuid.NewRandom()
+        res := todoCtr.svc.InsertTodo(&todo)
         rsp.SendResponse(ctx, res)
     }
 }
@@ -106,7 +107,7 @@ func (todoCtr *TodoController) UpdateTodo() gin.HandlerFunc {
         }
         
         todo.ID = id 
-        res := todoCtr.svc.UpdateData(&todo)
+        res := todoCtr.svc.UpdateTodo(&todo)
         rsp.SendResponse(ctx, res)
     }
 }
@@ -129,7 +130,7 @@ func (todoCtr *TodoController) DeleteTodo() gin.HandlerFunc {
         var todo models.Todo 
         todo.ID = id 
 
-        res := todoCtr.svc.RemoveData(&todo)
+        res := todoCtr.svc.RemoveTodo(&todo)
         rsp.SendResponse(ctx, res)
     }
 }

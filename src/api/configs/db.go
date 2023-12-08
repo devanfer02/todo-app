@@ -9,6 +9,14 @@ import (
 	"gorm.io/gorm"
 )
 
+type DbRepo interface {
+    FindAll(data interface{}) error 
+    FindOne(data interface{}, query string, params ...interface{}) error 
+    Create(data interface{}) error
+    Update(data interface{}, query string, params ...interface{}) int64 
+    Delete(data interface{}, query string, params ...interface{}) int64
+}
+
 type Database struct {
 	db *gorm.DB
 }
@@ -44,6 +52,27 @@ func (Db *Database) MigrateDB() {
 		&models.Todo{},
 	)
 }
+
+func (Db *Database) FindAll(data interface{}) error {
+    return Db.db.Find(data).Error
+}
+
+func (Db *Database) FindOne(data interface{}, query string, params ...interface{}) error {
+    return Db.db.Model(data).Where(query, params...).Find(data).Error
+}
+
+func (Db *Database) Create(data interface{}) error {
+    return Db.db.Create(data).Error
+}
+
+func (Db *Database) Update(data interface{}, query string, params ...interface{}) int64 {
+    return Db.db.Model(data).Where(query, params).Updates(data).RowsAffected
+}
+
+func (Db *Database) Delete(data interface{}, query string, params ...interface{}) int64 {
+    return Db.db.Unscoped().Where(query, params).Delete(data).RowsAffected
+}
+
 
 func (Db *Database) migrate(models ...interface{}) {
 	for _, model := range models {
