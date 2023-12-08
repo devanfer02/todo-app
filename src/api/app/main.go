@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"os"
 	"todo-app/configs"
-	"todo-app/routes"
+	"todo-app/controllers"
+	"todo-app/services"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
+
 
 func main() {
 	if err := godotenv.Load(); err != nil {
@@ -17,12 +20,18 @@ func main() {
 
 	app 	:= gin.Default()
 	db 		:= configs.NewDatabase()
-	router 	:= routes.NewRouter(app, db)
+    todoSvc := services.NewTodoService(db)
+    todoCtr := controllers.NewTodoController(todoSvc)
 
+    app.Use(cors.Default())
 	db.ConnectDB()
 	db.MigrateDB()
 
-	router.CreateRouteTodo()
+	app.GET("/todo", todoCtr.GetTodos())
+    app.GET("/:id", todoCtr.GetTodos())
+    app.POST("/", todoCtr.CreateTodo())
+    app.PATCH("/:id", todoCtr.UpdateTodo())
+    app.DELETE("/:id", todoCtr.DeleteTodo())
 
 	app.Run(fmt.Sprintf(":%s", os.Getenv("APP_PORT")))
 }
