@@ -28,10 +28,10 @@ func main() {
 	db.MigrateDB()
 
 	app.GET("/todo", todoCtr.GetTodos())
-    app.GET("/:id", todoCtr.GetTodos())
-    app.POST("/", todoCtr.CreateTodo())
-    app.PATCH("/:id", todoCtr.UpdateTodo())
-    app.DELETE("/:id", todoCtr.DeleteTodo())
+    app.GET("/todo/:id", todoCtr.GetTodos())
+    app.POST("/todo", todoCtr.CreateTodo())
+    app.PATCH("/todo/:id", todoCtr.UpdateTodo())
+    app.DELETE("/todo/:id", todoCtr.DeleteTodo())
 
 	app.Run(fmt.Sprintf(":%s", os.Getenv("APP_PORT")))
 }
