@@ -4,13 +4,14 @@ interface Props {
   isOpen: boolean;
   modalTitle: string;
   children: ReactNode;
+  id: string;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Modal( { isOpen, modalTitle, children, setIsOpen }: Props ) {
+export default function Modal( { isOpen, modalTitle, children, id, setIsOpen }: Props ) {
 
   const closeModal = () => {
-    const modal = document.getElementById('add-modal')
+    const modal = document.getElementById(id)
 
     modal?.classList.add("hidden")
     setIsOpen(false)
@@ -20,7 +21,7 @@ export default function Modal( { isOpen, modalTitle, children, setIsOpen }: Prop
     <>
     <div className={isOpen ? `fixed inset-0 bg-black opacity-50 z-40` : 'none'}></div>
     <div 
-      id="add-modal" 
+      id={id}
       tabIndex={-1} 
       aria-hidden 
       className="hidden overflow-y-auto overflow-x-hidden 

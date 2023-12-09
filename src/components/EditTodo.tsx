@@ -1,24 +1,26 @@
 // import env from "../utils/env";
 import Modal from "./Modal";
 import Button from "./Button";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import env from "../utils/env";
 
 interface Todo {
+  id?: string;
   task: string;
   description: string;
 }
 
 interface Props {
   isOpen: boolean;
+  todoData: Todo;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 }
 
-export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
-  const [ task, setTask ] = useState("")
-  const [ desc, setDescription ] = useState("")
+export default function EditTodo( { isOpen, todoData, setIsOpen, refetch }: Props ) {
+  const [ task, setTask ] = useState(todoData ? todoData.task : '')
+  const [ desc, setDescription ] = useState(todoData ? todoData.description : '')  
 
   const handleInputTask = (
     e: ChangeEvent<HTMLInputElement>
@@ -32,7 +34,7 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
     setDescription(e.target.value)
   }
 
-  const addTodo = async (event: FormEvent<HTMLFormElement>) => {
+  const editTodo = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     try {
@@ -41,7 +43,7 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
         description: desc
       }
 
-      await axios.post(env.apiUrl + '/todo', todo)
+      await axios.patch(env.apiUrl + `/todo/${todo.id}`, todo)
 
       refetch()
     } catch (err) {
@@ -49,16 +51,20 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
     }
   }
 
+  useEffect(() => {
+    
+  }, [])
+
   return (
     <>
     <Modal 
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      modalTitle="Add Todo"
-      id="add-todo"
+      modalTitle="Edit Todo"
+      id="edit-todo"
       >
       <div className="">
-        <form action="" onSubmit={addTodo}>
+        <form action="" onSubmit={editTodo}>
           <div className="mb-3">
             <label htmlFor="Task" className="block">
               Task
