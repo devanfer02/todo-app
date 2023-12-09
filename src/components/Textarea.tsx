@@ -4,10 +4,10 @@ interface Props {
   className?: string;
   placeHolder?: string;
   name?: string;
-  onChange? (e: ChangeEvent<HTMLInputElement>): void;
+  onChange? (e: ChangeEvent<HTMLTextAreaElement>): void;
 }
 
-export default function Input(
+export default function Textarea(
   { 
     className = '', 
     placeHolder = '',
@@ -16,12 +16,11 @@ export default function Input(
   }: Props
 ) {
   return (
-    <input 
-      type="text" 
-      className={`focus:outline-none p-[0.35rem] ${className}`}
+    <textarea 
+      className={`focus:outline-none p-[0.35rem] resize-none ${className}`}
       placeholder={placeHolder}
       name={name}
       onChange={onChange ? (e) => onChange(e) : () => {}}
-    />
+    ></textarea>
   )
 }
