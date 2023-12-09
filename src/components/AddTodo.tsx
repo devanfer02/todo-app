@@ -74,7 +74,7 @@ export default function AddTodo( { isOpen, setFlash, setIsOpen, refetch }: Props
               name={'Task'}
               onChange={handleInputTask}
               value={task}
-              autoComplete="false"
+              autoComplete="off"
             />
           </div>
           <div className="mb-3">
@@ -87,7 +87,7 @@ export default function AddTodo( { isOpen, setFlash, setIsOpen, refetch }: Props
               name={'Description'}
               onChange={handleInputDesc}
               value={desc}
-              autoComplete="false"
+              autoComplete="off"
             />
           </div>
           <Button 

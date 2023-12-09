@@ -97,7 +97,7 @@ export default function EditTodo(
               name={'Task'}
               onChange={handleInputTask}
               value={task}
-              autoComplete="false"
+              autoComplete="off"
             />
           </div>
           <div className="mb-3">

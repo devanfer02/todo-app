@@ -90,7 +90,7 @@ export default function TodosTable() {
             </div>
             <button 
               type="button" 
-              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg 
+              className="text-gray-50 bg-transparent  hover:text-gray-400 rounded-lg 
               text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" 
               data-modal-hide="default-modal"
               onClick={() => setFlash(null)}
