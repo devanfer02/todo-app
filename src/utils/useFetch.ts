@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 export default function useFetch<T>(apiUrl: string): [ T[], () => Promise<void>, unknown ] {
   const [ data, setData ] = useState<T[]>([])
-  const [ error, setError ] = useState(null)
+  const [ error, setError ] = useState<unknown>(null)
   
   const getData = async () => {
     try {
@@ -11,8 +11,8 @@ export default function useFetch<T>(apiUrl: string): [ T[], () => Promise<void>,
 
       setData(res.data.data)
     } catch (err) {
+      setError(err)
       console.log(err)
-      setError(error)
     }
   }
 

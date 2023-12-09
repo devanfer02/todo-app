@@ -4,19 +4,16 @@ import Button from "./Button";
 import { ChangeEvent, FormEvent, useState } from "react";
 import axios from "axios";
 import env from "../utils/env";
-
-interface Todo {
-  task: string;
-  description: string;
-}
+import { Flash, Status } from "../utils/types";
 
 interface Props {
   isOpen: boolean;
+  setFlash : React.Dispatch<React.SetStateAction<Flash | null>>; 
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 }
 
-export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
+export default function AddTodo( { isOpen, setFlash, setIsOpen, refetch }: Props ) {
   const [ task, setTask ] = useState("")
   const [ desc, setDescription ] = useState("")
 
@@ -36,17 +33,25 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
     event.preventDefault()
 
     try {
-      const todo: Todo = {
+      await axios.post(env.apiUrl + '/todo',  {
         task: task,
         description: desc
-      }
-
-      await axios.post(env.apiUrl + '/todo', todo)
-
-      refetch()
+      })
+      setFlash({
+        status: Status.SUCCESS,
+        message: 'Successfully add todo'
+      })
     } catch (err) {
       console.log(err)
+      setFlash({
+        status: Status.FAIL,
+        message: 'Failed to add todo. See logs for more info'
+      })
     }
+    refetch()
+    setTask('')
+    setDescription('')
+    setIsOpen(false)
   }
 
   return (
@@ -65,10 +70,11 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
             </label>
             <input 
               placeholder={'Enter the task'}
-              className="mt-1 rounded-md border border-slate-700 focus:border-sky-500 w-full p-1" 
+              className="mt-1 rounded-md border border-slate-700 focus:border-sky-500 w-full p-1 focus:outline-none" 
               name={'Task'}
               onChange={handleInputTask}
               value={task}
+              autoComplete="false"
             />
           </div>
           <div className="mb-3">
@@ -77,14 +83,15 @@ export default function AddTodo( { isOpen, setIsOpen, refetch }: Props ) {
             </label>
             <textarea 
               placeholder={'Enter task description'}
-              className="mt-1 rounded-md border border-slate-700 focus:border-sky-500 w-full p-1 resize-none" 
+              className="mt-1 rounded-md border border-slate-700 focus:border-sky-500 w-full p-1 resize-none focus:outline-none" 
               name={'Description'}
               onChange={handleInputDesc}
               value={desc}
+              autoComplete="false"
             />
           </div>
           <Button 
-            text="Add" 
+            text="Add Todo" 
             className="bg-sky-500 text-white w-full mx-0 rounded-md hover:bg-sky-700"            
           />
         </form>

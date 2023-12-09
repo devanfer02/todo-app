@@ -11,29 +11,25 @@ interface Props {
 export default function Modal( { isOpen, modalTitle, children, id, setIsOpen }: Props ) {
 
   const closeModal = () => {
-    const modal = document.getElementById(id)
-
-    modal?.classList.add("hidden")
     setIsOpen(false)
   }
 
   return (
     <>
-    <div className={isOpen ? `fixed inset-0 bg-black opacity-50 z-40` : 'none'}></div>
+    { isOpen && <div className="fixed inset-0 bg-black opacity-20 z-40"></div> }
     <div 
       id={id}
       tabIndex={-1} 
       aria-hidden 
-      className="hidden overflow-y-auto overflow-x-hidden 
-      fixed z-50 justify-center items-center
-      w-full inset-0 mx-auto max-h-full"
+      className={`${isOpen ? 'fixed' : 'hidden'} overflow-y-auto overflow-x-hidden 
+      fixed z-50 justify-center items-center w-full inset-0 mx-auto max-h-full`}
     >
       <div
         className="relative p-4 w-full max-w-2xl max-h-full mx-auto justify-center items-center"
       >
         <div className="relative bg-white rounded-lg shadow">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-            <h3 className="text-xl font-semibold text-gray-900">
+            <h3 className="text-2xl font-semibold text-gray-900">
               {modalTitle}
             </h3>
             <button 
