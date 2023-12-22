@@ -36,7 +36,6 @@ export default function Modal( { isOpen, modalTitle, children, id, setIsOpen }: 
     <>
     { isOpen && <div className="fixed inset-0 bg-black opacity-20 z-40"></div> }
     <div 
-      
       id={id}
       tabIndex={-1} 
       aria-hidden 
